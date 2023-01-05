@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Document</title>
+    <script src="Player.js" defer></script>
+    <link rel="stylesheet" href="Player.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script type="text/javascript" src="scripts/webRtcPlayer.js"></script>
+    <script type="text/javascript" src="scripts/app.js"></script>
+	<script type="text/javascript">
+		// This horrible hack is to make Fippo's adapter-latest.js work with Firefox when not on https
+		// because FF does not let you access navigator.mediaDevices when on http.
+		var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+		if (isFirefox) {
+			window.navigator.mozGetUserMedia = function () { };
+			if (window.navigator.mediaDevices === undefined) {
+				navigator.mediaDevices = {};
+				navigator.mediaDevices.getSupportedConstraints = function () { return {}; };
+				navigator.mediaDevices.getUserMedia = function () { return {}; };
+			}
+		}
+	</script>
+    <script> 
+        //styleAdditional = grabStyle;
+        inputOptions.controlScheme = ControlSchemeType.HoveringMouse;
+        inputOptions.fakeMouseWithTouches = true;
+        console.log("Script Ran");
+    </script>
+
+    
+</head>
+<body onload="load()">
+    <header>
+    </header>
+    <main>
+        <!-- <div style="background-color: brown;">hi salahhi salahhi salahhi salah</div>
+        <div style="background-color: orange; display: inline;">hi marius</div> -->
+        
+        
+        <div class="container">
+            <div  id="player"></div>
+            <!--<img src='https://picsum.photos/1000' alt="altt" id="background_image">-->
+            
+            <div class="shoe_info">
+                <div>
+                    <span class="title">Name</span>
+                    <span class="value">Mercurial</span>
+                </div>
+                <div>
+                    
+                    <span class="title">Brand</span>
+                    <span class="value">Nike</span>
+                </div>
+                <div>
+                    
+                    <span class="title">Availability</span>
+                    <span class="value">Available</span>
+                </div>
+                <div>
+                    
+                    <span class="title">Size</span>
+                    <span class="value">Us 6 to 8</span>
+                </div>
+                <div>
+                    
+                    <span class="title">Price</span>
+                    <span class="value"><span class="currency_span">$ </span>400</span>
+                </div>
+                <div>
+                    
+                    <span class="value" id="rating">⭐⭐⭐⭐⭐</span>
+                </div>
+                
+            </div>
+            <ul class="liste_nav">
+                <li class="icons_nav"><span id="btn_next" class="material-symbols-outlined material-icons">arrow_forward_ios</span></li>
+                <li class="icons_nav"><span id="btn_prev" class="material-symbols-outlined material-icons">arrow_back_ios</span></li>
+                <li class="icons_nav"><span id="btn_cam1" class="material-symbols-outlined material-icons">videocam</span></li>
+                <li class="icons_nav"><span id="btn_cam2" class="material-symbols-outlined material-icons">videocam</span></li>
+                <li class="icons_nav"><span id="btn_cam3" class="material-symbols-outlined material-icons">videocam</span></li>
+            </ul>
+        </div>
+
+		<!-- <div id="overlay" class="overlay text-light bg-dark">
+			<div id="overlayHeader">
+				<div id="qualityStatus" class="greyStatus">&#9679</div>
+				<div id="overlayButton">+</div>
+			</div>
+			<div id="overlaySettings">
+				<div id="showFPS" class="setting">
+					<div class="settings-text">Show FPS</div>
+					<label class="btn-overlay">
+						<input type="button" id="show-fps-button" class="overlay-button btn-flat" value="Toggle">
+					</label>
+				</div>
+				<div id="fillWindow" class="setting">
+					<div class="settings-text">Enlarge display to fill window</div>
+					<label class="tgl-switch">
+						<input type="checkbox" id="enlarge-display-to-fill-window-tgl" class="tgl tgl-flat" checked>
+						<div class="tgl-slider"></div>
+					</label>
+				</div>
+				<div id="qualityControlOwnership" class="setting">
+					<div class="settings-text">Is quality controller?</div>
+					<label class="tgl-switch">
+						<input type="checkbox" id="quality-control-ownership-tgl" class="tgl tgl-flat">
+						<div class="tgl-slider"></div>
+					</label>
+				</div>
+				<div id="matchViewportResolution" class="setting">
+					<div class="settings-text">Match viewport resolution</div>
+					<label class="tgl-switch">
+						<input type="checkbox" id="match-viewport-res-tgl" class="tgl tgl-flat">
+						<div class="tgl-slider"></div>
+					</label>
+				</div>
+				<div id="preferSFU" class="setting">
+					<div class="settings-text">Prefer SFU</div>
+					<label class="tgl-switch">
+						<input type="checkbox" id="prefer-sfu-tgl" class="tgl tgl-flat">
+						<div class="tgl-slider"></div>
+					</label>
+				</div>
+				<div id="useMic" class="setting">
+					<div class="settings-text">Use microphone</div>
+					<label class="tgl-switch">
+						<input type="checkbox" id="use-mic-tgl" class="tgl tgl-flat">
+						<div class="tgl-slider"></div>
+					</label>
+				</div>
+				<div id="forceMonoAudio" class="setting">
+					<div class="settings-text">Force mono audio</div>
+					<label class="tgl-switch">
+						<input type="checkbox" id="force-mono-tgl" class="tgl tgl-flat">
+						<div class="tgl-slider"></div>
+					</label>
+				</div>
+				<div id="forceTURN" class="setting">
+					<div class="settings-text">Force TURN</div>
+					<label class="tgl-switch">
+						<input type="checkbox" id="force-turn-tgl" class="tgl tgl-flat">
+						<div class="tgl-slider"></div>
+					</label>
+				</div>
+
+				<section id="encoderSettings">
+					<div id="encoderSettingsHeader" class="settings-text">
+						<div>Encoder Settings</div>
+					</div>
+					<div id="encoderParamsContainer" class="collapse">
+						<div class="form-group">
+							<label for="encoder-min-qp-text">Min QP</label>
+							<input type="number" class="form-control" id="encoder-min-qp-text" value="0" min="0"
+								max="51" />
+							<label for="encoder-max-qp-text">Max QP</label>
+							<input type="number" class="form-control" id="encoder-max-qp-text" value="51" min="0"
+								max="51" />
+							<br>
+							<input id="encoder-params-submit" class="overlay-button btn-flat" type="button"
+								value="Apply">
+						</div>
+					</div>
+				</section>
+
+				<section id="webRTCSettings">
+					<div id="webRTCSettingsHeader" class="settings-text">
+						<div>WebRTC Settings</div>
+					</div>
+					<div id="webrtcParamsContainer" class="collapse">
+						<div class="form-group">
+							<label for="webrtc-fps-text">FPS</label>
+							<input type="number" class="form-control" id="webrtc-fps-text" value="60" min="1"
+								max="999" />
+							<label for="webrtc-min-bitrate-text">Min bitrate (kbps)</label>
+							<input type="number" class="form-control" id="webrtc-min-bitrate-text" value="0" min="0"
+								max="100000" />
+							<label for="webrtc-max-bitrate-text">Max bitrate (kbps)</label>
+							<input type="number" class="form-control" id="webrtc-max-bitrate-text" value="0" min="0"
+								max="100000" />
+							<br>
+							<input id="webrtc-params-submit" class="overlay-button btn-flat" type="button"
+								value="Apply">
+						</div>
+					</div>
+				</section>
+
+				<section id="streamSettings">
+					<div id="streamSettingsHeader" class="settings-text">
+						<div>Stream Settings</div>
+					</div>
+					<div id="streamSettingsContainer" class="collapse">
+						<div class="form-group">
+							<div class="settings-text">Player stream</div>
+							<select class="form-control" id="stream-select"></select>
+							<div class="settings-text">Player track</div>
+							<select class="form-control" id="track-select"></select>
+						</div>
+					</div>
+				</section>
+				<br>
+
+				<section id="statsPanel">
+					<div class="setting settings-text">
+						<div>Show Stats</div>
+						<label class="tgl-switch">
+							<input type="checkbox" id="show-stats-tgl" class="tgl tgl-flat" checked>
+							<div class="tgl-slider"></div>
+						</label>
+					</div>
+					<div id="statsContainer" class="statsContainer">
+						<div id="stats" class="stats"></div>
+					</div>
+				</section>
+
+				<section id="latencyTest">
+					<div class="setting settings-text">
+						<div>Latency Report</div>
+						<label class="btn-overlay">
+							<input type="button" id="test-latency-button" class="overlay-button btn-flat"
+								value="Get Report">
+						</label>
+					</div>
+					<div id="latencyStatsContainer" class="statsContainer">
+						<div id=LatencyStats class="stats">No report yet...</div>
+					</div>
+				</section>
+			</div>
+		</div> -->
+        <div>
+            
+        </div>
+        </main>
+    <footer>
+    </footer>
+</body>
+</html>
